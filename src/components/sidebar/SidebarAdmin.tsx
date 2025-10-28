@@ -55,7 +55,7 @@ export default function SidebarAdmin() {
     const [isAnimating, setIsAnimating] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
 
-    const [userEmail, setUserEmail] = useState<string | null>(null);
+    const [, setUserEmail] = useState<string | null>(null);
     const [userName, setUserName] = useState<string | null>(null);
 
     useEffect(() => {
