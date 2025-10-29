@@ -80,9 +80,18 @@ export default function PortofolioAdmin() {
                             {projects.map((p) => (
                                 <TableRow key={p.id}>
                                     <TableCell>{p.judul}</TableCell>
-                                    <TableCell>{p.framework}</TableCell>
+                                    <TableCell>
+                                        {Array.isArray(p.framework) 
+                                            ? p.framework.map((fw, index) => (
+                                                <span key={index} className="inline-block mr-2">
+                                                    {fw.nama}
+                                                </span>
+                                              ))
+                                            : p.framework || '-'
+                                        }
+                                    </TableCell>
                                     <TableCell>{p.mulai}</TableCell>
-                                    <TableCell>{p.selesai}</TableCell>
+                                    <TableCell>{p.selesai || '-'}</TableCell>
                                     <TableCell>{p.status}</TableCell>
                                     <TableCell>{p.deskripsi}</TableCell>
                                 </TableRow>
@@ -94,3 +103,4 @@ export default function PortofolioAdmin() {
         </div>
     );
 }
+

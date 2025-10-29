@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -58,8 +58,7 @@ const sections: SidebarSection[] = [
 ];
 
 export default function SidebarPublic() {
-    const router = useRouter()
-    const pathname = router.pathname;
+    const pathname = usePathname();
 
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
