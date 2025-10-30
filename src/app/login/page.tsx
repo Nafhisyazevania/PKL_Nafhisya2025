@@ -28,19 +28,32 @@ export default function AdminLogin() {
         setError("");
         setLoading(true);
 
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
 
-        if (error) {
-            setError(error.message);
+            if (error) {
+                setError(error.message);
+                setLoading(false);
+                return;
+            }
+
+            // Tunggu session tersimpan, lalu redirect
+            if (data.session) {
+                // Refresh router cache untuk memastikan auth state ter-update
+                router.refresh();
+                router.push("/admin/dashboard-admin");
+            } else {
+                setError("Login berhasil tetapi tidak ada session");
+                setLoading(false);
+            }
+        } catch (err) {
+            setError("Terjadi kesalahan saat login");
             setLoading(false);
-            return;
+            console.error("Login error:", err);
         }
-        router.push("/admin/dashboard-admin");
-
-        setLoading(false);
     };
 
     return (
