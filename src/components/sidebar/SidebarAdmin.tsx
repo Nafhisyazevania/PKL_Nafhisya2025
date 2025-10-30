@@ -1,61 +1,42 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabaseClient";
-import { useRouter, usePathname } from 'next/navigation'
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Separator } from "@/components/ui/separator";
 
 import {
-    Mail,
-    ChevronLeft,
     BookUser,
-    User,
-    FileText,
-    Instagram,
-    Library,
-    Github,
+    ChevronLeft,
     CircleUserRound,
+    FileText,
+    Library,
     LogOut,
 } from "lucide-react";
 
 const sections = [
-    {
-        title: "About",
-        links: [
-            { name: "Dashboard", href: "/admin/dashboard-admin", icon: <BookUser size={18} /> },
-            { name: "Tentang Saya", href: "/admin/biodata-admin", icon: <User size={18} /> },
-            { name: "Portofolio", href: "/admin/portofolio-admin", icon: <FileText size={18} /> },
-        ],
-    },
-    {
-        title: "Kontak",
-        links: [
-            { name: "Email", href: "#", icon: <Mail size={18} /> },
-            { name: "Instagram", href: "https://www.instagram.com/piechaanafhisya", icon: <Instagram size={18} /> },
-            { name: "Github", href: "https://github.com/nafisyazevania", icon: <Github size={18} /> },
-        ],
-    },
+    { name: "Dashboard", href: "/admin/dashboard-admin", icon: <BookUser size={18} /> },
+    { name: "Portofolio", href: "/admin/portofolio-admin", icon: <FileText size={18} /> },
 ];
 
 export default function SidebarAdmin() {
-    const router = useRouter()
+    const router = useRouter();
     const pathname = usePathname();
 
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
 
-    const [, setUserEmail] = useState<string | null>(null);
     const [userName, setUserName] = useState<string | null>(null);
 
     useEffect(() => {
@@ -82,8 +63,9 @@ export default function SidebarAdmin() {
             } = await supabase.auth.getUser();
 
             if (user) {
-                setUserEmail(user.email ?? null);
-                setUserName((user.user_metadata?.name || user.email?.split("@")[0]) ?? null);
+                setUserName(
+                    user.user_metadata?.name || user.email?.split("@")[0] || "Admin"
+                );
             }
         };
 
@@ -91,10 +73,12 @@ export default function SidebarAdmin() {
 
         const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
             if (session?.user) {
-                setUserEmail(session.user.email ?? null);
-                setUserName((session.user.user_metadata?.name || session.user.email?.split("@")[0]) ?? null);
+                setUserName(
+                    session.user.user_metadata?.name ||
+                    session.user.email?.split("@")[0] ||
+                    "Admin"
+                );
             } else {
-                setUserEmail(null);
                 setUserName(null);
             }
         });
@@ -102,7 +86,7 @@ export default function SidebarAdmin() {
         return () => {
             listener.subscription.unsubscribe();
         };
-    }, []);
+    }, [router]);
 
     const handleToggle = () => {
         if (isAnimating) return;
@@ -114,9 +98,9 @@ export default function SidebarAdmin() {
     if (!isMounted) return null;
 
     const handleLogout = async () => {
-        await supabase.auth.signOut()
-        router.push('/admin/login')
-    }
+        await supabase.auth.signOut();
+        router.push("/login");
+    };
 
     return (
         <TooltipProvider delayDuration={0}>
@@ -158,73 +142,49 @@ export default function SidebarAdmin() {
                     </Button>
                 </div>
 
-                <nav className={cn("flex-1 overflow-y-auto px-3 py-4 space-y-4", isCollapsed && "p-3")}>
-                    {sections.map((section, i) => (
-                        <div key={i} className="space-y-1">
-                            <h4
-                                className={cn(
-                                    "px-3 py-1 text-xs font-semibold uppercase text-neutral-500 transition-all duration-300",
-                                    isCollapsed && "text-center"
-                                )}
-                            >
-                                <span className={cn(isCollapsed && "hidden")}>{section.title}</span>
-                                <span className={cn(!isCollapsed && "hidden")}>—</span>
-                            </h4>
+                <nav className={cn("flex-1 overflow-y-auto px-3 py-4 space-y-2", isCollapsed && "p-3")}>
+                    {sections.map((link) => {
+                        const isActive = pathname === link.href;
 
-                            {section.links.map((link, j) => {
-                                const isActive = pathname === link.href;
-                                const isExternal = link.href.startsWith("http") || link.href.startsWith("mailto:");
+                        const linkClasses = cn(
+                            "flex items-center gap-3 rounded-lg px-3 py-2 transition-colors",
+                            isActive
+                                ? "bg-blue-500 text-white"
+                                : "hover:bg-neutral-800 text-neutral-300",
+                            isCollapsed && "justify-center"
+                        );
 
-                                const linkClasses = cn(
-                                    buttonVariants({ variant: "ghost", size: "default" }),
-                                    "w-full h-10 flex justify-start items-center gap-3 px-3 rounded-md transition-all duration-300",
-                                    "hover:bg-neutral-800 hover:text-white",
-                                    isActive && "bg-blue-600 text-white",
-                                    isCollapsed && "justify-center p-0"
-                                );
-
-                                const content = (
-                                    <>
+                        return (
+                            <Tooltip key={link.name}>
+                                <TooltipTrigger asChild>
+                                    <Link href={link.href} className={linkClasses}>
                                         {link.icon}
-                                        <span className={cn("transition-opacity duration-300", isCollapsed && "opacity-0 hidden")}>
-                                            {link.name}
-                                        </span>
-                                    </>
-                                );
-
-                                return (
-                                    <Tooltip key={j}>
-                                        <TooltipTrigger asChild>
-                                            {isExternal ? (
-                                                <a href={link.href} target="_blank" rel="noopener noreferrer" className={linkClasses}>
-                                                    {content}
-                                                </a>
-                                            ) : (
-                                                <Link href={link.href} className={linkClasses}>
-                                                    {content}
-                                                </Link>
-                                            )}
-                                        </TooltipTrigger>
-                                        {isCollapsed && (
-                                            <TooltipContent side="right" className="bg-neutral-900 text-white border-neutral-800">
-                                                {link.name}
-                                            </TooltipContent>
-                                        )}
-                                    </Tooltip>
-                                );
-                            })}
-                        </div>
-                    ))}
+                                        {!isCollapsed && <span>{link.name}</span>}
+                                    </Link>
+                                </TooltipTrigger>
+                                {isCollapsed && (
+                                    <TooltipContent
+                                        side="right"
+                                        className="bg-neutral-900 text-white border-neutral-800"
+                                    >
+                                        {link.name}
+                                    </TooltipContent>
+                                )}
+                            </Tooltip>
+                        );
+                    })}
                 </nav>
 
                 <div className={cn("mt-auto p-4 border-t border-neutral-800", isCollapsed && "p-3")}>
                     <Separator className="bg-neutral-800 mb-4" />
-
-                    <div className={cn(
-                        "flex items-center gap-3",
-                        isCollapsed ? "flex-col justify-center" : "justify-between bg-neutral-800 p-3 rounded-xl border border-neutral-700"
-                    )}>
-
+                    <div
+                        className={cn(
+                            "flex items-center gap-3",
+                            isCollapsed
+                                ? "flex-col justify-center"
+                                : "justify-between bg-neutral-800 p-3 rounded-xl border border-neutral-700"
+                        )}
+                    >
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Link
@@ -234,22 +194,26 @@ export default function SidebarAdmin() {
                                         isCollapsed && "justify-center w-full"
                                     )}
                                 >
-                                    <CircleUserRound size={isCollapsed ? 24 : 28} className="text-neutral-300 shrink-0" />
+                                    <CircleUserRound
+                                        size={isCollapsed ? 24 : 28}
+                                        className="text-neutral-300 shrink-0"
+                                    />
                                     {!isCollapsed && (
                                         <div className="flex flex-col overflow-hidden">
                                             <span className="font-semibold text-sm text-white truncate group-hover:text-blue-400 transition-colors">
-                                                {userName || "Admin"}
+                                                {userName}
                                             </span>
-                                            <span className="text-xs text-neutral-400">
-                                                Administrator
-                                            </span>
+                                            <span className="text-xs text-neutral-400">Admin</span>
                                         </div>
                                     )}
                                 </Link>
                             </TooltipTrigger>
                             {isCollapsed && (
-                                <TooltipContent side="right" className="bg-neutral-900 text-white border-neutral-800">
-                                    Profil: {userName || "Admin"}
+                                <TooltipContent
+                                    side="right"
+                                    className="bg-neutral-900 text-white border-neutral-800"
+                                >
+                                    Profil: {userName}
                                 </TooltipContent>
                             )}
                         </Tooltip>
@@ -257,14 +221,14 @@ export default function SidebarAdmin() {
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
-                                    variant="destructive" // Menggunakan variant destructive untuk logout
-                                    size={isCollapsed ? "icon" : "sm"} // Ukuran berubah saat collapsed
+                                    variant="destructive"
+                                    size={isCollapsed ? "icon" : "sm"}
                                     onClick={handleLogout}
                                     className={cn(
-                                        "shrink-0", // Agar tidak mengecil saat nama panjang
-                                        isCollapsed ? "w-8 h-8" : "gap-1.5 px-3 py-1.5 text-xs" // Styling spesifik collapsed/expanded
+                                        "shrink-0",
+                                        isCollapsed ? "w-8 h-8" : "gap-1.5 px-3 py-1.5 text-xs"
                                     )}
-                                    aria-label="Logout" // Baik untuk aksesibilitas
+                                    aria-label="Logout"
                                 >
                                     <LogOut size={isCollapsed ? 18 : 16} />
                                 </Button>

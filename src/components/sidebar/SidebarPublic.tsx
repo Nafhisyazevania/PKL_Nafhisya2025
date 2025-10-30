@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { usePathname } from 'next/navigation'
+import { usePathname } from "next/navigation";
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
     Tooltip,
     TooltipContent,
@@ -23,6 +23,7 @@ import {
     Instagram,
     Github,
     Home,
+    Library,
 } from "lucide-react";
 
 interface SidebarLink {
@@ -50,9 +51,23 @@ const sections: SidebarSection[] = [
     {
         title: "Kontak",
         links: [
-            { name: "Email", href: "#", icon: <Mail size={18} /> },
-            { name: "Instagram", href: "https://www.instagram.com/piechaanafhisya", icon: <Instagram size={18} />, external: true },
-            { name: "Github", href: "https://github.com/nafisyazevania", icon: <Github size={18} />, external: true },
+            { name: "Email", 
+                href: "https://mail.google.com/mail/u/0/?to=nafhisyazevania@gmail.com", 
+                icon: <Mail size={18} />,
+                external: true,
+            },
+            {
+                name: "Instagram",
+                href: "https://www.instagram.com/piechaanafhisya",
+                icon: <Instagram size={18} />,
+                external: true,
+            },
+            {
+                name: "Github",
+                href: "https://github.com/nafisyazevania",
+                icon: <Github size={18} />,
+                external: true,
+            },
         ],
     },
 ];
@@ -70,112 +85,128 @@ export default function SidebarPublic() {
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const stored = localStorage.getItem("sidebar-collapsed");
+            const stored = localStorage.getItem("sidebar-collapsed-public");
             if (stored === "true") setIsCollapsed(true);
         }
     }, []);
 
     useEffect(() => {
         if (isMounted) {
-            localStorage.setItem("sidebar-collapsed", String(isCollapsed));
+            localStorage.setItem("sidebar-collapsed-public", String(isCollapsed));
         }
     }, [isCollapsed, isMounted]);
 
-    const handleToggleCollapse = () => {
+    const handleToggle = () => {
+        if (isAnimating) return;
         setIsAnimating(true);
-        setIsCollapsed((prev) => !prev);
-        setTimeout(() => setIsAnimating(false), 300);
+        setIsCollapsed(!isCollapsed);
+        setTimeout(() => setIsAnimating(false), 500);
     };
 
+    if (!isMounted) return null;
+
     return (
-        <aside
-            className={cn(
-                "fixed left-0 top-0 h-screen bg-neutral-800 text-white transition-all duration-300 z-50 flex flex-col",
-                isCollapsed ? "w-16" : "w-64",
-                isAnimating && "pointer-events-none"
-            )}
-        >
-            {/* Header */}
-            <div className="p-4 flex items-center justify-between border-b border-neutral-700">
-                {!isCollapsed && (
-                    <h2 className="text-xl font-bold truncate">Menu Publik</h2>
+        <TooltipProvider delayDuration={0}>
+            <aside
+                data-collapsed={isCollapsed}
+                className={cn(
+                    "flex flex-col fixed md:relative bg-neutral-950 text-neutral-200 shadow-xl z-40",
+                    "transition-[width] duration-500 ease-in-out rounded-none md:rounded-2xl",
+                    isCollapsed ? "w-[60px]" : "w-[250px]"
                 )}
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleToggleCollapse}
-                    className="text-white hover:bg-neutral-700 ml-auto"
+            >
+                <div
+                    className={cn(
+                        "flex items-center justify-between p-4 border-b border-neutral-800",
+                        isCollapsed && "justify-center p-3"
+                    )}
                 >
-                    <ChevronLeft
-                        size={20}
-                        className={cn(
-                            "transition-transform",
-                            isCollapsed && "rotate-180"
-                        )}
-                    />
-                </Button>
-            </div>
-
-            {/* Navigation */}
-            <nav className="flex-1 overflow-y-auto p-4 space-y-6">
-                <TooltipProvider>
-                    {sections.map((section) => (
-                        <div key={section.title}>
-                            {!isCollapsed && (
-                                <h3 className="text-xs font-semibold text-neutral-400 mb-3 uppercase tracking-wider">
-                                    {section.title}
-                                </h3>
+                    <div className="flex items-center gap-2">
+                        <span
+                            className={cn(
+                                "text-lg font-bold flex gap-3 items-center transition-opacity duration-300 ease-in-out",
+                                isCollapsed && "opacity-0 hidden"
                             )}
-                            <ul className="space-y-2">
-                                {section.links.map((link) => {
-                                    const isActive = pathname === link.href;
-                                    const LinkComponent = link.external ? "a" : Link;
-                                    const linkProps = link.external 
-                                        ? { href: link.href, target: "_blank", rel: "noopener noreferrer" }
-                                        : { href: link.href };
+                        >
+                            <Library className="text-blue-400" size={24} />
+                            Public Site
+                        </span>
+                    </div>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={handleToggle}
+                        className="size-8 rounded-lg hover:bg-neutral-800 transition-all"
+                    >
+                        <ChevronLeft
+                            size={18}
+                            className={cn(
+                                "transition-transform duration-500",
+                                isCollapsed && "rotate-180"
+                            )}
+                        />
+                    </Button>
+                </div>
+                <nav
+                    className={cn(
+                        "flex-1 overflow-y-auto px-3 py-4 space-y-6",
+                        isCollapsed
+                    )}
+                >
+                    {sections.map((section, index) => (
+                        <div key={index} className="space-y-2">
+                            {!isCollapsed && (
+                                <h4 className="px-3 text-xs font-semibold uppercase text-neutral-500">
+                                    {section.title}
+                                </h4>
+                            )}
 
-                                    const content = (
-                                        <LinkComponent
-                                            {...linkProps}
-                                            className={cn(
-                                                buttonVariants({ variant: "ghost" }),
-                                                "w-full justify-start text-white hover:bg-neutral-700",
-                                                isActive && "bg-neutral-700",
-                                                isCollapsed && "justify-center px-2"
-                                            )}
-                                        >
-                                            {link.icon}
-                                            {!isCollapsed && (
-                                                <span className="ml-3">{link.name}</span>
-                                            )}
-                                        </LinkComponent>
-                                    );
+                            {section.links.map((link) => {
+                                const isActive = pathname === link.href;
+                                const linkClasses = cn(
+                                    "flex items-center gap-3 p-2 rounded-lg transition-colors",
+                                    isActive
+                                        ? "bg-blue-500 text-white"
+                                        : "hover:bg-neutral-800 text-neutral-300",
+                                    isCollapsed && "justify-center"
+                                );
 
-                                    if (isCollapsed) {
-                                        return (
-                                            <li key={link.name}>
-                                                <Tooltip>
-                                                    <TooltipTrigger asChild>
-                                                        {content}
-                                                    </TooltipTrigger>
-                                                    <TooltipContent side="right">
-                                                        {link.name}
-                                                    </TooltipContent>
-                                                </Tooltip>
-                                            </li>
-                                        );
+                                const LinkComp = link.external ? "a" : Link;
+                                const linkProps = link.external
+                                    ? {
+                                        href: link.href,
+                                        target: "_blank",
+                                        rel: "noopener noreferrer",
                                     }
+                                    : { href: link.href };
 
-                                    return <li key={link.name}>{content}</li>;
-                                })}
-                            </ul>
-                            {section !== sections[sections.length - 1] && (
-                                <Separator className="my-4 bg-neutral-700" />
+                                return (
+                                    <Tooltip key={link.name}>
+                                        <TooltipTrigger asChild>
+                                            <LinkComp {...linkProps} className={linkClasses}>
+                                                {link.icon}
+                                                {!isCollapsed && <span>{link.name}</span>}
+                                            </LinkComp>
+                                        </TooltipTrigger>
+                                        {isCollapsed && (
+                                            <TooltipContent
+                                                side="right"
+                                                className="bg-neutral-900 text-white border-neutral-800"
+                                            >
+                                                {link.name}
+                                            </TooltipContent>
+                                        )}
+                                    </Tooltip>
+                                );
+                            })}
+
+                            {index < sections.length - 1 && (
+                                <Separator className="bg-neutral-800 my-4" />
                             )}
                         </div>
                     ))}
-                </TooltipProvider>
-            </nav>
-        </aside>
+                </nav>
+            </aside>
+        </TooltipProvider>
     );
 }

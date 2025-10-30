@@ -38,8 +38,6 @@ export default function AdminLogin() {
             setLoading(false);
             return;
         }
-        await supabase.auth.refreshSession();
-
         router.push("/admin/dashboard-admin");
 
         setLoading(false);
