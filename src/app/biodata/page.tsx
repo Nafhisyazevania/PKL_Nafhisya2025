@@ -19,6 +19,7 @@ import {
 import { supabase } from "@/lib/supabaseClient";
 import Image from "next/image";
 import Link from "next/link";
+import NavigationBar from "@/components/NavigationBar";
 
 interface Project {
     id: number;
@@ -59,14 +60,15 @@ export default function Biodata() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-white">
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors">
+            <NavigationBar />
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-32">
                 {/* Back Button */}
                 <div className="mb-12">
                     <Button
                         asChild
                         variant="ghost"
-                        className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 -ml-2"
+                        className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 -ml-2"
                     >
                         <Link href="/portofolio" className="flex items-center gap-2">
                             <ArrowLeft className="w-4 h-4" />
@@ -84,7 +86,7 @@ export default function Biodata() {
                     {/* Header Profile */}
                     <div className="grid md:grid-cols-3 gap-8">
                         <div className="md:col-span-1">
-                            <div className="aspect-square rounded-3xl overflow-hidden border border-gray-200">
+                            <div className="aspect-square rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-800">
                                 <Image
                                     src="/pica.jpeg"
                                     alt="Nafhisya Zevania"
@@ -96,51 +98,51 @@ export default function Biodata() {
                         </div>
                         <div className="md:col-span-2 space-y-6">
                             <div>
-                                <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
+                                <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2">
                                     Nafhisya Zevania
                                 </h1>
-                                <p className="text-lg text-gray-600">
+                                <p className="text-lg text-gray-600 dark:text-gray-400">
                                     Siswa SMK Negeri 8 Malang · Rekayasa Perangkat Lunak
                                 </p>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4 py-6">
                                 <div className="space-y-1">
-                                    <p className="text-sm text-gray-500">Lokasi</p>
-                                    <p className="font-medium text-gray-900">Malang, Indonesia</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Lokasi</p>
+                                    <p className="font-medium text-gray-900 dark:text-white">Malang, Indonesia</p>
                                 </div>
                                 <div className="space-y-1">
-                                    <p className="text-sm text-gray-500">Kelas</p>
-                                    <p className="font-medium text-gray-900">12 RPL A / 26</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Kelas</p>
+                                    <p className="font-medium text-gray-900 dark:text-white">12 RPL A / 26</p>
                                 </div>
                                 <div className="space-y-1">
-                                    <p className="text-sm text-gray-500">Tempat Magang</p>
-                                    <p className="font-medium text-gray-900">PT. Hummatech</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Tempat Magang</p>
+                                    <p className="font-medium text-gray-900 dark:text-white">PT. Hummatech</p>
                                 </div>
                                 <div className="space-y-1">
-                                    <p className="text-sm text-gray-500">Periode PKL</p>
-                                    <p className="font-medium text-gray-900">23 Jun - 28 Okt 2025</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Periode PKL</p>
+                                    <p className="font-medium text-gray-900 dark:text-white">23 Jun - 28 Okt 2025</p>
                                 </div>
                                 <div className="space-y-1">
-                                    <p className="text-sm text-gray-500">Total Projek</p>
-                                    <p className="font-medium text-gray-900">{totalProjek}</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Total Projek</p>
+                                    <p className="font-medium text-gray-900 dark:text-white">{totalProjek}</p>
                                 </div>
                                 <div className="space-y-1">
-                                    <p className="text-sm text-gray-500">Divisi</p>
-                                    <p className="font-medium text-gray-900">UI/UX Design</p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">Divisi</p>
+                                    <p className="font-medium text-gray-900 dark:text-white">UI/UX Design</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <Separator className="bg-gray-200" />
+                    <Separator className="bg-gray-200 dark:bg-gray-800" />
 
                     {/* About Section */}
                     <section className="space-y-4">
-                        <h2 className="text-2xl font-bold text-gray-900">
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                             Tentang Saya
                         </h2>
-                        <div className="space-y-4 text-lg text-gray-700 leading-relaxed">
+                        <div className="space-y-4 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
                             <p>
                                 Perkenalkan, saya Nafhisya (Pica) dari Malang. Ketertarikan saya pada
                                 teknologi sudah ada sejak kecil, mulai dari bermain game hingga belajar TIK
@@ -155,44 +157,44 @@ export default function Biodata() {
                     </section>
                     {/* Skills Section */}
                     <section className="space-y-8">
-                        <h2 className="text-2xl font-bold text-gray-900">
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                             Keahlian Selama PKL
                         </h2>
 
                         <div className="grid sm:grid-cols-2 gap-4">
                             {[
                                 {
-                                    icon: <Zap className="w-5 h-5 text-gray-700" />,
+                                    icon: <Zap className="w-5 h-5 text-gray-700 dark:text-gray-300" />,
                                     title: "Wireframing",
                                     desc: "Membuat struktur dasar tampilan dengan efisien",
                                 },
                                 {
-                                    icon: <Layout className="w-5 h-5 text-gray-700" />,
+                                    icon: <Layout className="w-5 h-5 text-gray-700 dark:text-gray-300" />,
                                     title: "Prototyping",
                                     desc: "Membangun desain interaktif dengan Figma",
                                 },
                                 {
-                                    icon: <Code className="w-5 h-5 text-gray-700" />,
+                                    icon: <Code className="w-5 h-5 text-gray-700 dark:text-gray-300" />,
                                     title: "User Research",
                                     desc: "Mengidentifikasi kebutuhan dan perilaku pengguna",
                                 },
                                 {
-                                    icon: <Rocket className="w-5 h-5 text-gray-700" />,
+                                    icon: <Rocket className="w-5 h-5 text-gray-700 dark:text-gray-300" />,
                                     title: "Kolaborasi Frontend",
                                     desc: "Bekerja sama dengan developer untuk hasil maksimal",
                                 },
                             ].map((skill, index) => (
                                 <div
                                     key={index}
-                                    className="p-6 bg-gray-50 rounded-2xl border border-gray-100 hover:border-gray-200 transition-all"
+                                    className="p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-gray-200 dark:hover:border-gray-700 transition-all"
                                 >
                                     <div className="flex items-start gap-4">
-                                        <div className="p-2 bg-white rounded-lg border border-gray-200">
+                                        <div className="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                                             {skill.icon}
                                         </div>
                                         <div>
-                                            <h3 className="font-semibold text-gray-900 mb-1">{skill.title}</h3>
-                                            <p className="text-sm text-gray-600">{skill.desc}</p>
+                                            <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{skill.title}</h3>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">{skill.desc}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -208,7 +210,7 @@ export default function Biodata() {
                     transition={{ duration: 0.5, delay: 0.2 }}
                     className="mt-16 space-y-8"
                 >
-                    <h2 className="text-2xl font-bold text-gray-900">
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                         Timeline Kegiatan PKL
                     </h2>
 
@@ -219,14 +221,14 @@ export default function Biodata() {
                                 className="flex gap-4"
                             >
                                 <div className="flex flex-col items-center">
-                                    <div className="w-3 h-3 rounded-full bg-gray-900 mt-1.5" />
+                                    <div className="w-3 h-3 rounded-full bg-gray-900 dark:bg-white mt-1.5" />
                                     {index < timelineData.length - 1 && (
-                                        <div className="w-0.5 h-full bg-gray-200 mt-2" />
+                                        <div className="w-0.5 h-full bg-gray-200 dark:bg-gray-800 mt-2" />
                                     )}
                                 </div>
                                 <div className="pb-8">
-                                    <p className="font-semibold text-gray-900 mb-1">{item.title}</p>
-                                    <p className="text-sm text-gray-600">{item.date}</p>
+                                    <p className="font-semibold text-gray-900 dark:text-white mb-1">{item.title}</p>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400">{item.date}</p>
                                 </div>
                             </div>
                         ))}
