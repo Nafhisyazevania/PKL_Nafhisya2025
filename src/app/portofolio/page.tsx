@@ -45,6 +45,29 @@ interface Project {
 
 export default function PortofolioPage() {
     const [projects, setProjects] = useState<Project[]>([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    // Array foto PKL
+    const pklPhotos = [
+        { id: 1, src: "/pica.jpeg", alt: "Moment PKL 1" },
+        { id: 2, src: "/pica.jpeg", alt: "Moment PKL 2" },
+        { id: 3, src: "/pica.jpeg", alt: "Moment PKL 3" },
+        { id: 4, src: "/pica.jpeg", alt: "Moment PKL 4" },
+    ];
+
+    // Auto-rotate carousel with boundary
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prev) => {
+                // Stop at the end, don't loop
+                if (prev >= pklPhotos.length - 1) {
+                    return 0; // Reset to start
+                }
+                return prev + 1;
+            });
+        }, 4000);
+        return () => clearInterval(interval);
+    }, [pklPhotos.length]);
 
     const getProjects = async () => {
         const { data, error } = await supabase.from("project").select("*");
@@ -58,7 +81,7 @@ export default function PortofolioPage() {
     useEffect(() => {
         getProjects();
     }, []);
-
+    
     const getBadgeColor = (jenis: string) => {
         switch (jenis.toLowerCase()) {
             case "pembelajaran":
@@ -77,50 +100,183 @@ export default function PortofolioPage() {
             <NavigationBar />
 
             {/* Hero Section */}
-            <section id="hero" className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-6xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
-                        className="space-y-8"
-                    >
-                        <div className="space-y-2">
-                            <p className="text-sm font-medium text-gray-600 tracking-wide uppercase">
-                                Portfolio 2025
+            <section id="hero" className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                        {/* Left Content */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
+                            className="space-y-8"
+                        >
+                            <div className="space-y-2">
+                                <p className="text-sm font-medium text-gray-600 tracking-wide uppercase">
+                                    Portfolio 2025
+                                </p>
+                                <h1 className="text-5xl md:text-7xl font-bold text-gray-900 tracking-tight">
+                                    Nafhisya Zevania
+                                </h1>
+                                <p className="text-xl md:text-2xl text-gray-600 font-light">
+                                    UI/UX Designer
+                                </p>
+                            </div>
+                            <p className="text-lg text-gray-600 max-w-xl leading-relaxed">
+                                Saya fokus merancang pengalaman digital yang intuitif dan menyenangkan.
+                                Saat ini sedang magang di PT. Hummatech sebagai UI/UX Designer.
                             </p>
-                            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 tracking-tight">
-                                Nafhisya Zevania
-                            </h1>
-                            <p className="text-xl md:text-2xl text-gray-600 font-light">
-                                UI/UX Designer
-                            </p>
-                        </div>
-                        <p className="text-lg text-gray-600 max-w-2xl leading-relaxed">
-                            Saya fokus merancang pengalaman digital yang intuitif dan menyenangkan.
-                            Saat ini sedang magang di PT. Hummatech sebagai UI/UX Designer.
-                        </p>
-                        <div className="flex flex-wrap gap-3 pt-4">
-                            <Button
-                                size="lg"
-                                className="bg-gray-900 hover:bg-gray-800 text-white rounded-full px-8"
-                                onClick={() => {
-                                    const element = document.getElementById("projects");
-                                    element?.scrollIntoView({ behavior: "smooth" });
-                                }}
+                            <div className="flex flex-wrap gap-3 pt-4">
+                                <Button
+                                    size="lg"
+                                    className="bg-gray-900 hover:bg-gray-800 text-white rounded-full px-8"
+                                    onClick={() => {
+                                        const element = document.getElementById("projects");
+                                        element?.scrollIntoView({ behavior: "smooth" });
+                                    }}
+                                >
+                                    Lihat Karya Saya
+                                </Button>
+                                <Button
+                                    size="lg"
+                                    variant="outline"
+                                    className="border-gray-300 text-gray-900 hover:bg-gray-50 rounded-full px-8"
+                                    asChild
+                                >
+                                    <Link href="/biodata">Selengkapnya</Link>
+                                </Button>
+                            </div>
+                        </motion.div>
+
+                        {/* Right Creative Carousel */}
+                        <div className="relative h-[520px] hidden lg:flex items-center justify-center">
+                            <div 
+                                className="relative w-[450px] h-[500px]"
+                                style={{ perspective: "1200px" }}
                             >
-                                Lihat Karya Saya
-                            </Button>
-                            <Button
-                                size="lg"
-                                variant="outline"
-                                className="border-gray-300 text-gray-900 hover:bg-gray-50 rounded-full px-8"
-                                asChild
-                            >
-                                <Link href="/biodata">Selengkapnya</Link>
-                            </Button>
+                                {/* Stack of photos with 3D stack effect */}
+                                {pklPhotos.map((photo, index) => {
+                                    const isActive = index === currentIndex;
+                                    const isPrev = index < currentIndex;
+                                    const isNext = index > currentIndex;
+                                    
+                                    let position = {};
+                                    
+                                    if (isActive) {
+                                        // Active card - center & front
+                                        position = {
+                                            x: 0,
+                                            y: 0,
+                                            scale: 1,
+                                            rotateY: 0,
+                                            opacity: 1,
+                                            zIndex: 30,
+                                        };
+                                    } else if (isPrev) {
+                                        // Previous cards - stack to left
+                                        const offset = currentIndex - index;
+                                        position = {
+                                            x: -80 - (offset * 30),
+                                            y: offset * 10,
+                                            scale: 0.85 - (offset * 0.05),
+                                            rotateY: -45,
+                                            opacity: Math.max(0.3, 1 - offset * 0.2),
+                                            zIndex: 20 - offset,
+                                        };
+                                    } else {
+                                        // Next cards - stack to right
+                                        const offset = index - currentIndex;
+                                        position = {
+                                            x: 80 + (offset * 30),
+                                            y: offset * 10,
+                                            scale: 0.85 - (offset * 0.05),
+                                            rotateY: 45,
+                                            opacity: Math.max(0.3, 1 - offset * 0.2),
+                                            zIndex: 20 - offset,
+                                        };
+                                    }
+
+                                    return (
+                                        <motion.div
+                                            key={photo.id}
+                                            initial={{ opacity: 0, scale: 0.5 }}
+                                            animate={position}
+                                            transition={{
+                                                duration: 0.6,
+                                                ease: [0.34, 1.56, 0.64, 1],
+                                            }}
+                                            className="absolute inset-0 flex items-center justify-center"
+                                            style={{
+                                                transformStyle: "preserve-3d",
+                                            }}
+                                        >
+                                            <div 
+                                                className={`relative w-72 h-96 rounded-3xl overflow-hidden shadow-2xl border-8 border-white bg-white transition-all duration-300 ${
+                                                    isActive ? "cursor-default" : "cursor-pointer hover:scale-105"
+                                                }`}
+                                                onClick={() => !isActive && setCurrentIndex(index)}
+                                            >
+                                                <img
+                                                    src={photo.src}
+                                                    alt={photo.alt}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                                {!isActive && (
+                                                    <div className="absolute inset-0 bg-black/20 transition-opacity hover:bg-black/10" />
+                                                )}
+                                            </div>
+                                        </motion.div>
+                                    );
+                                })}
+
+                                {/* Navigation Controls */}
+                                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-3">
+                                    <button
+                                        onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
+                                        disabled={currentIndex === 0}
+                                        className="p-2 rounded-full bg-white shadow-md hover:shadow-lg transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                        </svg>
+                                    </button>
+
+                                    {/* Dots */}
+                                    <div className="flex gap-2">
+                                        {pklPhotos.map((_, index) => (
+                                            <button
+                                                key={index}
+                                                onClick={() => setCurrentIndex(index)}
+                                                className={`transition-all duration-300 rounded-full ${
+                                                    index === currentIndex
+                                                        ? "w-8 h-2 bg-gray-900"
+                                                        : "w-2 h-2 bg-gray-300 hover:bg-gray-500"
+                                                }`}
+                                            />
+                                        ))}
+                                    </div>
+
+                                    <button
+                                        onClick={() => setCurrentIndex((prev) => Math.min(pklPhotos.length - 1, prev + 1))}
+                                        disabled={currentIndex === pklPhotos.length - 1}
+                                        className="p-2 rounded-full bg-white shadow-md hover:shadow-lg transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                {/* Counter */}
+                                <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 text-sm text-gray-500 font-medium">
+                                    {currentIndex + 1} / {pklPhotos.length}
+                                </div>
+
+                                {/* Decorative blur elements */}
+                                <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full blur-3xl opacity-60 -z-10" />
+                                <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-br from-pink-100 to-orange-100 rounded-full blur-3xl opacity-60 -z-10" />
+                            </div>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </section>
 
@@ -180,7 +336,7 @@ export default function PortofolioPage() {
                                         <p className="text-sm text-gray-500">Periode PKL</p>
                                         <p className="font-medium text-gray-900">Jun - Okt 2025</p>
                                     </div>
-                                </div>
+                </div>
 
                                 <Button
                                     asChild
@@ -220,7 +376,7 @@ export default function PortofolioPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {projects.map((item, index) => (
                                     <motion.div
-                                        key={item.id}
+                                key={item.id}
                                         initial={{ opacity: 0, y: 20 }}
                                         whileInView={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -229,42 +385,42 @@ export default function PortofolioPage() {
                                         <Link href={`/portofolio/detail?id=${item.id}`}>
                                             <Card className="group bg-white border border-gray-200 hover:border-gray-300 transition-all duration-200 overflow-hidden h-full">
                                                 {/* Image */}
-                                                {item.dokum ? (
+                                {item.dokum ? (
                                                     <div className="aspect-video overflow-hidden bg-gray-100">
-                                                        <img
-                                                            src={
-                                                                item.dokum.startsWith("http")
-                                                                    ? item.dokum
-                                                                    : `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/dokum/${item.dokum}`
-                                                            }
-                                                            alt={item.judul}
+                                        <img
+                                            src={
+                                                item.dokum.startsWith("http")
+                                                    ? item.dokum
+                                                    : `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/dokum/${item.dokum}`
+                                            }
+                                            alt={item.judul}
                                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                                        />
-                                                    </div>
-                                                ) : (
+                                        />
+                                    </div>
+                                ) : (
                                                     <div className="aspect-video flex items-center justify-center bg-gray-50">
                                                         <ImageIcon className="w-12 h-12 text-gray-300" />
-                                                    </div>
-                                                )}
+                                    </div>
+                                )}
 
                                                 <CardContent className="p-6 space-y-3">
                                                     <div className="flex items-start justify-between gap-3">
                                                         <h3 className="text-xl font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
-                                                            {item.judul}
+                                        {item.judul}
                                                         </h3>
-                                                        <Badge
-                                                            variant="outline"
+                                        <Badge
+                                            variant="outline"
                                                             className={`text-xs shrink-0 transition-colors ${getBadgeColor(
-                                                                item.jenis_projek
-                                                            )}`}
-                                                        >
-                                                            {item.jenis_projek}
-                                                        </Badge>
+                                                item.jenis_projek
+                                            )}`}
+                                        >
+                                            {item.jenis_projek}
+                                        </Badge>
                                                     </div>
-                                                    
+
                                                     <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
-                                                        {item.deskripsi}
-                                                    </p>
+                                        {item.deskripsi}
+                                    </p>
 
                                                     <div className="flex items-center gap-4 text-xs text-gray-500 pt-2">
                                                         <span className="flex items-center gap-1">
@@ -274,15 +430,15 @@ export default function PortofolioPage() {
                                                         <span className="flex items-center gap-1">
                                                             <Folder className="w-3.5 h-3.5" />
                                                             {item.fw}
-                                                        </span>
-                                                    </div>
-                                                </CardContent>
+                                        </span>
+                                    </div>
+                                </CardContent>
                                             </Card>
-                                        </Link>
+                                    </Link>
                                     </motion.div>
-                                ))}
-                            </div>
-                        ) : (
+                        ))}
+                    </div>
+                ) : (
                             <div className="text-center py-16">
                                 <p className="text-gray-500">Belum ada projek tersedia.</p>
                             </div>
