@@ -62,7 +62,7 @@ export default function PortofolioAdminPage() {
         if (value === "all") setFilteredProject(project);
         else setFilteredProject(project.filter((p) => p.jenis_projek === value));
     };
-
+    
     const getBadgeColor = (jenis: string) => {
         switch (jenis.toLowerCase()) {
             case "pembelajaran":
