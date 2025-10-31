@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import SidebarPublic from "@/components/sidebar/SidebarPublic";
-import { useRouter } from "next/navigation";
 
 import {
     Card,
@@ -40,9 +39,7 @@ interface Project {
 export default function PortofolioAdminPage() {
     const [project, setProject] = useState<Project[]>([]);
     const [filteredProject, setFilteredProject] = useState<Project[]>([]);
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [selectedFilter, setSelectedFilter] = useState<string>("all");
-    const router = useRouter();
 
     const getProject = async () => {
         const { data, error } = await supabase.from("project").select("*");
@@ -57,10 +54,22 @@ export default function PortofolioAdminPage() {
         getProject();
     }, []);
 
+    // Update filteredProject when project data changes
+    useEffect(() => {
+        if (selectedFilter === "all") {
+            setFilteredProject(project);
+        } else {
+            setFilteredProject(project.filter((p) => p.jenis_projek === selectedFilter));
+        }
+    }, [project, selectedFilter]);
+
     const handleFilterChange = (value: string) => {
         setSelectedFilter(value);
-        if (value === "all") setFilteredProject(project);
-        else setFilteredProject(project.filter((p) => p.jenis_projek === value));
+        if (value === "all") {
+            setFilteredProject(project);
+        } else {
+            setFilteredProject(project.filter((p) => p.jenis_projek === value));
+        }
     };
     
     const getBadgeColor = (jenis: string) => {
@@ -73,11 +82,6 @@ export default function PortofolioAdminPage() {
             default:
                 return "bg-green-500/20 text-green-400 border-green-500/40";
         }
-    };
-
-    const getImageUrl = (path: string) => {
-        if (!path) return "https://placehold.co/600x400?text=No+Image";
-        return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/dokum/${path}`;
     };
 
     return (
@@ -119,19 +123,23 @@ export default function PortofolioAdminPage() {
                                 hover:-translate-y-1 hover:border-blue-600/40 flex flex-col h-full"
                             >
                                 {/* Gambar */}
-                                {imageUrl ? (
-                                    <div className="flex justify-center">
+                                {item.dokum ? (
+                                    <div className="h-40 overflow-hidden px-5">
                                         <img
-                                            src={imageUrl}
-                                            alt="Dokumentasi Proyek"
-                                            className="rounded-lg border border-blue-900/40 shadow-md shadow-blue-900/30 max-h-[400px] w-full object-contain"
+                                            src={
+                                                item.dokum.startsWith("http")
+                                                    ? item.dokum
+                                                    : `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/dokum/${item.dokum}`
+                                            }
+                                            alt={item.judul}
+                                            className="rounded-lg w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                                         />
                                     </div>
                                 ) : (
-                                    <div className="flex items-center justify-center border border-blue-900/40 rounded-lg h-56 bg-[#0d1324]">
+                                    <div className="flex items-center justify-center border border-blue-900/40 rounded-lg h-40 bg-[#0d1324]">
                                         <div className="flex flex-col items-center text-neutral-400">
                                             <ImageIcon className="w-10 h-10 mb-2 text-blue-500" />
-                                            <p>Tidak ada gambar proyek</p>
+                                            <p className="text-xs">Tidak ada gambar proyek</p>
                                         </div>
                                     </div>
                                 )}
