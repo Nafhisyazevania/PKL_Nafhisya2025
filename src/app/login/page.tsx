@@ -40,9 +40,7 @@ export default function AdminLogin() {
                 return;
             }
 
-            // Tunggu session tersimpan, lalu redirect
             if (data.session) {
-                // Refresh router cache untuk memastikan auth state ter-update
                 router.refresh();
                 router.push("/admin/dashboard-admin");
             } else {
@@ -65,10 +63,10 @@ export default function AdminLogin() {
                     backgroundSize: "cover",
                 }}
             />
-            <Card className="relative z-10 bg-neutral-800/30 backdrop-blur-md border border-neutral-700 text-neutral-200 shadow-2xl w-full max-w-sm">
+            <Card className="relative z-10 bg-neutral-800/30 backdrop-blur-md border border-blue-700/50 text-neutral-200 shadow-2xl w-full max-w-sm">
                 <CardHeader className="flex flex-col items-center text-center">
                     <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-2">
-                        <Library className="text-white" size={32} />
+                        <h1 className="text-white font-bold text-2xl">N</h1>
                     </div>
                     <CardTitle className="text-2xl font-bold text-white">Admin Login</CardTitle>
                     <CardDescription className="text-sm text-neutral-400">

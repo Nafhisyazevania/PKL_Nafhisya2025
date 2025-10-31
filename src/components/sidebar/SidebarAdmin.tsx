@@ -18,6 +18,7 @@ import {
 import {
     BookUser,
     ChevronLeft,
+    ChevronRight,
     CircleUserRound,
     FileText,
     Library,
@@ -36,39 +37,32 @@ export default function SidebarAdmin() {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
+    const [isMobileOpen, setIsMobileOpen] = useState(false);
 
     const [userName, setUserName] = useState<string | null>(null);
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    useEffect(() => setIsMounted(true), []);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const stored = localStorage.getItem("sidebar-collapsed");
+            const stored = localStorage.getItem("sidebar-collapsed-admin");
             if (stored === "true") setIsCollapsed(true);
         }
     }, []);
 
     useEffect(() => {
         if (isMounted) {
-            localStorage.setItem("sidebar-collapsed", String(isCollapsed));
+            localStorage.setItem("sidebar-collapsed-admin", String(isCollapsed));
         }
     }, [isCollapsed, isMounted]);
 
     useEffect(() => {
         const getUser = async () => {
-            const {
-                data: { user },
-            } = await supabase.auth.getUser();
-
+            const { data: { user } } = await supabase.auth.getUser();
             if (user) {
-                setUserName(
-                    user.user_metadata?.name || user.email?.split("@")[0] || "Admin"
-                );
+                setUserName(user.user_metadata?.name || user.email?.split("@")[0] || "Admin");
             }
         };
-
         getUser();
 
         const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -78,9 +72,7 @@ export default function SidebarAdmin() {
                     session.user.email?.split("@")[0] ||
                     "Admin"
                 );
-            } else {
-                setUserName(null);
-            }
+            } else setUserName(null);
         });
 
         return () => {
@@ -95,23 +87,52 @@ export default function SidebarAdmin() {
         setTimeout(() => setIsAnimating(false), 500);
     };
 
-    if (!isMounted) return null;
-
     const handleLogout = async () => {
         await supabase.auth.signOut();
         router.push("/login");
     };
 
+    if (!isMounted) return null;
+
     return (
         <TooltipProvider delayDuration={0}>
+            {/* Tombol Toggle Mobile */}
+            <div className="fixed top-4 left-4 z-50 md:hidden">
+                <Button
+                    variant="secondary"
+                    size="icon"
+                    className="bg-neutral-900 hover:bg-neutral-800 text-white border border-neutral-700 transition-all"
+                    onClick={() => setIsMobileOpen(!isMobileOpen)}
+                >
+                    {isMobileOpen ? (
+                        <ChevronLeft size={20} className="transition-transform duration-300" />
+                    ) : (
+                        <ChevronRight size={20} className="transition-transform duration-300" />
+                    )}
+                </Button>
+            </div>
+
+            {isMobileOpen && (
+                <div
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+                    onClick={() => setIsMobileOpen(false)}
+                />
+            )}
+
             <aside
                 data-collapsed={isCollapsed}
                 className={cn(
-                    "flex flex-col fixed md:relative h-screen md:h-[calc(100vh-2rem)] bg-neutral-950 text-neutral-200 shadow-xl z-40",
-                    "transition-[width] duration-500 ease-in-out rounded-none md:rounded-2xl",
-                    isCollapsed ? "w-[60px]" : "w-[250px]"
+                    "flex flex-col fixed md:relative bg-neutral-950 text-neutral-200 shadow-xl border border-neutral-800 z-50 md:z-40",
+                    "transition-all duration-500 ease-in-out",
+                    isCollapsed ? "md:w-[60px]" : "md:w-[250px]",
+                    "h-full md:h-auto",
+                    isMobileOpen
+                        ? "translate-x-0 w-[250px] top-0 left-0 h-full"
+                        : "-translate-x-full md:translate-x-0",
+                    "md:rounded-2xl"
                 )}
             >
+                {/* Header */}
                 <div
                     className={cn(
                         "flex items-center justify-between p-4 border-b border-neutral-800",
@@ -126,28 +147,47 @@ export default function SidebarAdmin() {
                             )}
                         >
                             <Library className="text-blue-400" size={24} />
-                            Portofolio
+                            Admin Panel
                         </span>
                     </div>
+
                     <Button
                         variant="ghost"
                         size="icon"
                         onClick={handleToggle}
-                        className="size-8 rounded-lg hover:bg-neutral-800 transition-all"
+                        className="size-8 rounded-lg hover:bg-neutral-800 transition-all hidden md:flex"
                     >
                         <ChevronLeft
                             size={18}
                             className={cn("transition-transform duration-500", isCollapsed && "rotate-180")}
                         />
                     </Button>
+
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setIsMobileOpen(!isMobileOpen)}
+                        className="size-8 rounded-lg hover:bg-neutral-800 transition-all md:hidden"
+                    >
+                        {isMobileOpen ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
+                    </Button>
                 </div>
 
-                <nav className={cn("flex-1 overflow-y-auto px-3 py-4 space-y-2", isCollapsed && "p-3")}>
+                {/* Navigation */}
+                <nav className={cn("flex-1 overflow-y-auto px-3 py-4 space-y-4", isCollapsed && "p-3")}>
+                    <h4
+                        className={cn(
+                            "px-3 text-xs font-semibold uppercase text-neutral-500",
+                            isCollapsed && "hidden"
+                        )}
+                    >
+                        Menu
+                    </h4>
+
                     {sections.map((link) => {
                         const isActive = pathname === link.href;
-
                         const linkClasses = cn(
-                            "flex items-center gap-3 rounded-lg px-3 py-2 transition-colors",
+                            "flex items-center gap-3 p-2 rounded-lg transition-colors",
                             isActive
                                 ? "bg-blue-500 text-white"
                                 : "hover:bg-neutral-800 text-neutral-300",
@@ -175,6 +215,7 @@ export default function SidebarAdmin() {
                     })}
                 </nav>
 
+                {/* Footer (Profil & Logout) */}
                 <div className={cn("mt-auto p-4 border-t border-neutral-800", isCollapsed && "p-3")}>
                     <Separator className="bg-neutral-800 mb-4" />
                     <div

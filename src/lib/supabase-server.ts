@@ -1,5 +1,3 @@
-// src/lib/supabase-server.ts
-// Server-side Supabase client untuk API routes
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -11,7 +9,7 @@ if (!supabaseUrl || !supabaseKey) {
 
 export const supabaseServer = createClient(supabaseUrl, supabaseKey, {
     auth: {
-        persistSession: false, // Tidak perlu persist session di server
+        persistSession: false,
     }
 })
 

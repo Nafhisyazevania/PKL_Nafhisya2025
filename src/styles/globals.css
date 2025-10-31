@@ -133,3 +133,20 @@ body {
     @apply bg-background text-foreground;
   }
 }
+/* ===== Scrollbar Styling (Global) ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}

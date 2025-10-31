@@ -57,8 +57,8 @@ export async function middleware(req: NextRequest) {
     const hasValidSession = sessionData?.session !== null
     const hasValidUser = userData?.user !== null && !error
     
-    console.log('🔐 Auth check:', { 
-        pathname, 
+    console.log('🔐 Auth check:', {
+        pathname,
         hasValidSession,
         hasValidUser,
         error: error?.message,

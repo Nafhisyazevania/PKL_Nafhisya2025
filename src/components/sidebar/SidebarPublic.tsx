@@ -17,6 +17,7 @@ import { Separator } from "@/components/ui/separator";
 import {
     Mail,
     ChevronLeft,
+    ChevronRight,
     BookUser,
     User,
     FileText,
@@ -45,14 +46,14 @@ const sections: SidebarSection[] = [
             { name: "Home", href: "/", icon: <Home size={18} /> },
             { name: "Biodata", href: "/biodata", icon: <User size={18} /> },
             { name: "Portofolio", href: "/portofolio", icon: <FileText size={18} /> },
-            { name: "Profil PKL", href: "/profilpkl", icon: <BookUser size={18} /> },
         ],
     },
     {
         title: "Kontak",
         links: [
-            { name: "Email", 
-                href: "https://mail.google.com/mail/u/0/?to=nafhisyazevania@gmail.com", 
+            {
+                name: "Email",
+                href: "https://mail.google.com/mail/u/0/?to=nafhisyazevania@gmail.com",
                 icon: <Mail size={18} />,
                 external: true,
             },
@@ -74,14 +75,12 @@ const sections: SidebarSection[] = [
 
 export default function SidebarPublic() {
     const pathname = usePathname();
-
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
+    const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    useEffect(() => setIsMounted(true), []);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -107,12 +106,39 @@ export default function SidebarPublic() {
 
     return (
         <TooltipProvider delayDuration={0}>
+            <div className="fixed top-4 left-4 z-50 md:hidden">
+                <Button
+                    variant="secondary"
+                    size="icon"
+                    className="bg-neutral-900 hover:bg-neutral-800 text-white border border-neutral-700 transition-all"
+                    onClick={() => setIsMobileOpen(!isMobileOpen)}
+                >
+                    {isMobileOpen ? (
+                        <ChevronLeft size={20} className="transition-transform duration-300" />
+                    ) : (
+                        <ChevronRight size={20} className="transition-transform duration-300" />
+                    )}
+                </Button>
+            </div>
+
+            {isMobileOpen && (
+                <div
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+                    onClick={() => setIsMobileOpen(false)}
+                />
+            )}
+
             <aside
                 data-collapsed={isCollapsed}
                 className={cn(
-                    "flex flex-col fixed md:relative bg-neutral-950 text-neutral-200 shadow-xl z-40",
-                    "transition-[width] duration-500 ease-in-out rounded-none md:rounded-2xl",
-                    isCollapsed ? "w-[60px]" : "w-[250px]"
+                    "flex flex-col fixed md:relative bg-neutral-950 text-neutral-200 shadow-xl z-50 md:z-40",
+                    "transition-all duration-500 ease-in-out",
+                    isCollapsed ? "md:w-[60px]" : "md:w-[250px]",
+                    "h-full md:h-auto",
+                    isMobileOpen
+                        ? "translate-x-0 w-[250px] top-0 left-0 h-full"
+                        : "-translate-x-full md:translate-x-0",
+                    "md:rounded-2xl"
                 )}
             >
                 <div
@@ -132,11 +158,12 @@ export default function SidebarPublic() {
                             Public Site
                         </span>
                     </div>
+
                     <Button
                         variant="ghost"
                         size="icon"
                         onClick={handleToggle}
-                        className="size-8 rounded-lg hover:bg-neutral-800 transition-all"
+                        className="size-8 rounded-lg hover:bg-neutral-800 transition-all hidden md:flex"
                     >
                         <ChevronLeft
                             size={18}
@@ -146,7 +173,21 @@ export default function SidebarPublic() {
                             )}
                         />
                     </Button>
+
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setIsMobileOpen(!isMobileOpen)}
+                        className="size-8 rounded-lg hover:bg-neutral-800 transition-all md:hidden"
+                    >
+                        {isMobileOpen ? (
+                            <ChevronLeft size={18} />
+                        ) : (
+                            <ChevronRight size={18} />
+                        )}
+                    </Button>
                 </div>
+
                 <nav
                     className={cn(
                         "flex-1 overflow-y-auto px-3 py-4 space-y-6",
@@ -174,10 +215,10 @@ export default function SidebarPublic() {
                                 const LinkComp = link.external ? "a" : Link;
                                 const linkProps = link.external
                                     ? {
-                                        href: link.href,
-                                        target: "_blank",
-                                        rel: "noopener noreferrer",
-                                    }
+                                            href: link.href,
+                                            target: "_blank",
+                                            rel: "noopener noreferrer",
+                                        }
                                     : { href: link.href };
 
                                 return (
