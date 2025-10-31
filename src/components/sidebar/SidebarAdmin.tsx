@@ -21,9 +21,17 @@ import {
     ChevronRight,
     CircleUserRound,
     FileText,
-    Library,
     LogOut,
 } from "lucide-react";
+
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
+} from "@/components/ui/dialog";
 
 const sections = [
     { name: "Dashboard", href: "/admin/dashboard-admin", icon: <BookUser size={18} /> },
@@ -38,6 +46,7 @@ export default function SidebarAdmin() {
     const [isAnimating, setIsAnimating] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
 
     const [userName, setUserName] = useState<string | null>(null);
 
@@ -146,8 +155,8 @@ export default function SidebarAdmin() {
                                 isCollapsed && "opacity-0 hidden"
                             )}
                         >
-                            <Library className="text-blue-400" size={24} />
-                            Admin Panel
+                            <h1 className="text-white font-bold text-2xl">N</h1>
+                            Admin Page
                         </span>
                     </div>
 
@@ -264,7 +273,7 @@ export default function SidebarAdmin() {
                                 <Button
                                     variant="destructive"
                                     size={isCollapsed ? "icon" : "sm"}
-                                    onClick={handleLogout}
+                                    onClick={() => setIsLogoutDialogOpen(true)}
                                     className={cn(
                                         "shrink-0",
                                         isCollapsed ? "w-8 h-8" : "gap-1.5 px-3 py-1.5 text-xs"
@@ -278,6 +287,37 @@ export default function SidebarAdmin() {
                     </div>
                 </div>
             </aside>
+
+            {/* Dialog Konfirmasi Logout */}
+            <Dialog open={isLogoutDialogOpen} onOpenChange={setIsLogoutDialogOpen}>
+                <DialogContent
+                    className="bg-neutral-950 text-white border border-neutral-800"
+                    showCloseButton={false}>
+                    <DialogHeader>
+                        <DialogTitle>Konfirmasi Logout</DialogTitle>
+                        <DialogDescription className="text-neutral-400">
+                            Apakah kamu yakin ingin logout dari akun ini?
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <DialogFooter className="flex justify-end gap-2 mt-4">
+                        <Button
+                            variant="secondary"
+                            onClick={() => setIsLogoutDialogOpen(false)}
+                            className="bg-neutral-100 hover:bg-neutral-500 text-black"
+                        >
+                            Batal
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
         </TooltipProvider>
     );
 }

@@ -8,28 +8,18 @@ import { motion } from "framer-motion";
 
 import {
     Card,
-    CardHeader,
-    CardTitle,
     CardContent,
-    CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
-    Info,
     CalendarDays,
     Folder,
     Image as ImageIcon,
     Mail,
     Instagram,
     Github,
-    MapPin,
-    Briefcase,
-    GraduationCap,
     ArrowRight,
-    Sparkles,
 } from "lucide-react";
 
 interface Project {
@@ -49,19 +39,16 @@ export default function PortofolioPage() {
 
     // Array foto PKL
     const pklPhotos = [
-        { id: 1, src: "/pica.jpeg", alt: "Moment PKL 1" },
-        { id: 2, src: "/pica.jpeg", alt: "Moment PKL 2" },
-        { id: 3, src: "/pica.jpeg", alt: "Moment PKL 3" },
-        { id: 4, src: "/pica.jpeg", alt: "Moment PKL 4" },
+        { id: 1, src: "/memo1.jpeg", alt: "Moment PKL 1" },
+        { id: 2, src: "/memo2.jpeg", alt: "Moment PKL 2" },
+        { id: 3, src: "/memo3.jpeg", alt: "Moment PKL 3" },
     ];
 
-    // Auto-rotate carousel with boundary
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prev) => {
-                // Stop at the end, don't loop
                 if (prev >= pklPhotos.length - 1) {
-                    return 0; // Reset to start
+                    return 0;
                 }
                 return prev + 1;
             });
@@ -112,7 +99,7 @@ export default function PortofolioPage() {
                         >
                             <div className="space-y-2">
                                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400 tracking-wide uppercase">
-                                    Portfolio 2025
+                                    Portfolio PKL 2025
                                 </p>
                                 <h1 className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white tracking-tight">
                                     Nafhisya Zevania
@@ -121,9 +108,8 @@ export default function PortofolioPage() {
                                     UI/UX Designer
                                 </p>
                             </div>
-                            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-xl leading-relaxed">
-                                Saya fokus merancang pengalaman digital yang intuitif dan menyenangkan.
-                                Saat ini sedang magang di PT. Hummatech sebagai UI/UX Designer.
+                            <p className="text-m text-gray-600 dark:text-gray-400 max-w-xl leading-relaxed">
+                                Saya adalah siswa SMK Negeri 8 Malang, menjalankan PKL di PT.Hummatech. Disana saya sebagai UI/UX Designer.
                             </p>
                             <div className="flex flex-wrap gap-3 pt-4">
                                 <Button
@@ -147,13 +133,11 @@ export default function PortofolioPage() {
                             </div>
                         </motion.div>
 
-                        {/* Right Creative Carousel */}
                         <div className="relative h-[520px] hidden lg:flex items-center justify-center">
                             <div 
                                 className="relative w-[450px] h-[500px]"
                                 style={{ perspective: "1200px" }}
                             >
-                                {/* Stack of photos with 3D stack effect */}
                                 {pklPhotos.map((photo, index) => {
                                     const isActive = index === currentIndex;
                                     const isPrev = index < currentIndex;
@@ -162,7 +146,6 @@ export default function PortofolioPage() {
                                     let position = {};
                                     
                                     if (isActive) {
-                                        // Active card - center & front
                                         position = {
                                             x: 0,
                                             y: 0,
@@ -172,7 +155,6 @@ export default function PortofolioPage() {
                                             zIndex: 30,
                                         };
                                     } else if (isPrev) {
-                                        // Previous cards - stack to left
                                         const offset = currentIndex - index;
                                         position = {
                                             x: -80 - (offset * 30),
@@ -183,7 +165,6 @@ export default function PortofolioPage() {
                                             zIndex: 20 - offset,
                                         };
                                     } else {
-                                        // Next cards - stack to right
                                         const offset = index - currentIndex;
                                         position = {
                                             x: 80 + (offset * 30),
@@ -209,7 +190,7 @@ export default function PortofolioPage() {
                                                 transformStyle: "preserve-3d",
                                             }}
                                         >
-                                            <div 
+                                            <div
                                                 className={`relative w-72 h-96 rounded-3xl overflow-hidden shadow-2xl border-8 border-white bg-white transition-all duration-300 ${
                                                     isActive ? "cursor-default" : "cursor-pointer hover:scale-105"
                                                 }`}
@@ -228,7 +209,6 @@ export default function PortofolioPage() {
                                     );
                                 })}
 
-                                {/* Navigation Controls */}
                                 <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-3">
                                     <button
                                         onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
@@ -266,14 +246,12 @@ export default function PortofolioPage() {
                                     </button>
                                 </div>
 
-                                {/* Counter */}
                                 <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 text-sm text-gray-500 dark:text-gray-400 font-medium">
                                     {currentIndex + 1} / {pklPhotos.length}
                                 </div>
 
-                                {/* Decorative blur elements */}
-                                <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full blur-3xl opacity-60 -z-10" />
-                                <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-br from-pink-100 to-orange-100 rounded-full blur-3xl opacity-60 -z-10" />
+                                <div className="absolute -top-20 -right-20 w-40 h-40 bg-linear-to-br from-blue-100 to-purple-100 rounded-full blur-3xl opacity-60 -z-10" />
+                                <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-linear-to-br from-pink-100 to-orange-100 rounded-full blur-3xl opacity-60 -z-10" />
                             </div>
                         </div>
                     </div>
@@ -292,16 +270,16 @@ export default function PortofolioPage() {
                         <div className="mb-16">
                             <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Tentang Saya</p>
                             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-                                Pelajar yang sedang eksplorasi dunia desain
+                                UI/UX Designer dan Siswa SMK Negeri 8 Malang
                             </h2>
                         </div>
 
                         <div className="grid md:grid-cols-3 gap-8">
                             <div className="md:col-span-1">
                                 <div className="w-full aspect-square rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800">
-                                    <img 
-                                        src="/pica.jpeg" 
-                                        alt="Nafhisya Zevania" 
+                                    <img
+                                        src="/pica.jpeg"
+                                        alt="Nafhisya Zevania"
                                         className="w-full h-full object-cover"
                                     />
                                 </div>
@@ -309,12 +287,12 @@ export default function PortofolioPage() {
                             <div className="md:col-span-2 space-y-6">
                                 <div>
                                     <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                                        Halo! Saya Nafhisya, biasa dipanggil Pica. Saat ini saya siswa kelas 12 
-                                        jurusan RPL di SMK Negeri 8 Malang dan sedang menjalani magang di PT. Hummatech 
+                                        Halo! Saya Nafhisya, biasa dipanggil Pica. Saat ini saya siswa kelas 12
+                                        jurusan RPL di SMK Negeri 8 Malang dan menjalani PKL di PT. Hummatech
                                         sebagai UI/UX Designer.
                                     </p>
                                     <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                                        Saya suka menciptakan desain yang simple tapi tetap fungsional. Tujuan saya 
+                                        Saya suka menciptakan desain yang simple tapi tetap fungsional. Tujuan saya
                                         adalah membuat produk digital yang mudah digunakan dan nyaman dilihat.
                                     </p>
                                 </div>
@@ -330,11 +308,11 @@ export default function PortofolioPage() {
                                     </div>
                                     <div className="space-y-1">
                                         <p className="text-sm text-gray-500 dark:text-gray-400">Lokasi</p>
-                                        <p className="font-medium text-gray-900 dark:text-white">Malang, Indonesia</p>
+                                        <p className="font-medium text-gray-900 dark:text-white">Karangploso, Malang</p>
                                     </div>
                                     <div className="space-y-1">
                                         <p className="text-sm text-gray-500 dark:text-gray-400">Periode PKL</p>
-                                        <p className="font-medium text-gray-900 dark:text-white">Jun - Okt 2025</p>
+                                        <p className="font-medium text-gray-900 dark:text-white">23 Juni - 28 Oktober 2025</p>
                                     </div>
                 </div>
 
@@ -459,11 +437,8 @@ export default function PortofolioPage() {
                         <div className="mb-12">
                             <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Kontak</p>
                             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                                Mari Terhubung
+                                Hubungi
                             </h2>
-                            <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
-                                Jangan ragu untuk menghubungi saya melalui platform berikut
-                            </p>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -502,7 +477,7 @@ export default function PortofolioPage() {
                                 <Github className="w-6 h-6 text-gray-700 dark:text-gray-300 mb-3" />
                                 <p className="font-medium text-gray-900 dark:text-white mb-1">Github</p>
                                 <p className="text-sm text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-                                    nafisyazevania
+                                    nafhisyazevania
                                 </p>
                             </a>
                         </div>
