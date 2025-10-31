@@ -74,111 +74,123 @@ export default function DetailProject() {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-[#0a0f1a] text-blue-300">
-                Memuat detail proyek...
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-2 border-gray-200 border-t-gray-900 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Memuat...</p>
+                </div>
             </div>
         );
     }
 
     if (!project) {
         return (
-            <div className="min-h-screen flex items-center justify-center text-red-400">
-                Proyek tidak ditemukan.
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <div className="text-center space-y-4">
+                    <p className="text-gray-900 text-lg font-medium">Proyek tidak ditemukan</p>
+                    <Button
+                        asChild
+                        className="bg-gray-900 hover:bg-gray-800 text-white rounded-full"
+                    >
+                        <a href="/portofolio">Kembali</a>
+                    </Button>
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-neutral-950 text-white flex flex-col items-center px-4 py-10">
-            {/* Tombol Back */}
-            <div className="w-full max-w-3xl mb-6">
-                <Button
-                    variant="ghost"
-                    onClick={() => router.back()}
-                    className="flex items-center gap-2 text-white hover:text-blue-400 hover:bg-transparent"
+        <div className="min-h-screen bg-white">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                {/* Back Button */}
+                <div className="mb-12">
+                    <Button
+                        variant="ghost"
+                        onClick={() => router.back()}
+                        className="flex items-center gap-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 -ml-2"
+                    >
+                        <ArrowLeft className="w-4 h-4" />
+                        <span>Kembali</span>
+                    </Button>
+                </div>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="space-y-8"
                 >
-                    <ArrowLeft className="w-5 h-5" />
-                    <span>Kembali</span>
-                </Button>
-            </div>
-
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="w-full max-w-3xl"
-            >
-                <Card className="border border-blue-800/30 bg-transparent shadow-lg shadow-blue-900/20">
-                    <CardHeader className="text-center">
-                        <CardTitle className="text-3xl font-bold text-blue-400">
+                    {/* Title and Meta */}
+                    <div className="space-y-4">
+                        <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
                             {project.judul}
-                        </CardTitle>
-
-                        {/* Tanggal */}
-                        <div className="mt-3 flex flex-wrap justify-center gap-4 text-sm text-gray-300">
+                        </h1>
+                        
+                        <div className="flex flex-wrap gap-6 text-sm text-gray-600">
                             <div className="flex items-center gap-2">
-                                <CalendarDays className="w-4 h-4 text-blue-400" />
-                                <span>
-                                    <strong>Mulai:</strong> {project.tanggal_buat || "-"}
-                                </span>
+                                <CalendarDays className="w-4 h-4" />
+                                <span>{project.tanggal_buat || "-"}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <CalendarDays className="w-4 h-4 text-blue-400" />
-                                <span>
-                                    <strong>Selesai:</strong> {project.tanggal_selesai || "-"}
-                                </span>
+                                <FolderGit2 className="w-4 h-4" />
+                                <span>{project.jenis_projek || "-"}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Code2 className="w-4 h-4" />
+                                <span>{project.fw || "-"}</span>
                             </div>
                         </div>
-                    </CardHeader>
+                    </div>
 
-                    <CardContent className="space-y-6 mt-4">
-                        {/* Gambar Proyek */}
-                        {imageUrl ? (
-                            <div className="flex justify-center">
-                                <img
-                                    src={imageUrl}
-                                    alt="Dokumentasi Proyek"
-                                    className="rounded-xl border border-blue-900/30 shadow-lg shadow-blue-900/30 max-h-[400px] w-full object-contain"
-                                />
-                            </div>
-                        ) : (
-                            <div className="flex items-center justify-center border border-blue-900/30 rounded-lg h-56">
-                                <div className="flex flex-col items-center text-gray-400">
-                                    <ImageIcon className="w-10 h-10 mb-2 text-blue-500" />
-                                    <p>Tidak ada gambar proyek</p>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Deskripsi */}
-                        <div>
-                            <h3 className="text-lg font-semibold text-blue-300 mb-1">
-                                Deskripsi
-                            </h3>
-                            <p className="text-gray-300 leading-relaxed">
-                                {project.deskripsi || "-"}
-                            </p>
+                    {/* Image */}
+                    {imageUrl ? (
+                        <div className="aspect-video overflow-hidden rounded-2xl border border-gray-200">
+                            <img
+                                src={imageUrl}
+                                alt="Dokumentasi Proyek"
+                                className="w-full h-full object-cover"
+                            />
                         </div>
-
-                        {/* Info Projek */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="flex items-center gap-2">
-                                <FolderGit2 className="w-5 h-5 text-blue-400" />
-                                <span>
-                                    <strong>Jenis Projek:</strong> {project.jenis_projek || "-"}
-                                </span>
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                                <Code2 className="w-5 h-5 text-blue-400" />
-                                <span>
-                                    <strong>Framework:</strong> {project.fw || "-"}
-                                </span>
+                    ) : (
+                        <div className="aspect-video flex items-center justify-center rounded-2xl border border-gray-200 bg-gray-50">
+                            <div className="flex flex-col items-center text-gray-400">
+                                <ImageIcon className="w-12 h-12 mb-2" />
+                                <p className="text-sm">Tidak ada gambar proyek</p>
                             </div>
                         </div>
-                    </CardContent>
-                </Card>
-            </motion.div>
+                    )}
+
+                    {/* Description */}
+                    <div className="space-y-4">
+                        <h2 className="text-2xl font-bold text-gray-900">
+                            Tentang Projek
+                        </h2>
+                        <p className="text-lg text-gray-700 leading-relaxed">
+                            {project.deskripsi || "Tidak ada deskripsi"}
+                        </p>
+                    </div>
+
+                    {/* Project Details */}
+                    <div className="grid sm:grid-cols-2 gap-6 pt-8 border-t border-gray-200">
+                        <div className="space-y-2">
+                            <p className="text-sm text-gray-500">Tanggal Mulai</p>
+                            <p className="font-medium text-gray-900">{project.tanggal_buat || "-"}</p>
+                        </div>
+                        <div className="space-y-2">
+                            <p className="text-sm text-gray-500">Tanggal Selesai</p>
+                            <p className="font-medium text-gray-900">{project.tanggal_selesai || "-"}</p>
+                        </div>
+                        <div className="space-y-2">
+                            <p className="text-sm text-gray-500">Jenis Projek</p>
+                            <p className="font-medium text-gray-900">{project.jenis_projek || "-"}</p>
+                        </div>
+                        <div className="space-y-2">
+                            <p className="text-sm text-gray-500">Framework/Tools</p>
+                            <p className="font-medium text-gray-900">{project.fw || "-"}</p>
+                        </div>
+                    </div>
+                </motion.div>
+            </div>
         </div>
     );
 }
