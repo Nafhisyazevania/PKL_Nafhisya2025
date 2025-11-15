@@ -1,25 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { supabase } from "@/lib/supabaseClient";
 import NavigationBar from "@/components/NavigationBar";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
+    ArrowRight,
     CalendarDays,
     Folder,
-    Image as ImageIcon,
-    Mail,
-    Instagram,
     Github,
-    ArrowRight,
+    Image as ImageIcon,
+    Instagram,
+    Mail,
 } from "lucide-react";
 
 interface Project {
@@ -57,11 +56,15 @@ export default function PortofolioPage() {
     }, [pklPhotos.length]);
 
     const getProjects = async () => {
-        const { data, error } = await supabase.from("project").select("*");
-        if (error) {
-            console.error("Error fetching data:", error.message);
-        } else if (data) {
+        try {
+            const response = await fetch("/api/projects");
+            if (!response.ok) {
+                throw new Error("Failed to fetch projects");
+            }
+            const data = await response.json();
             setProjects(data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
         }
     };
 

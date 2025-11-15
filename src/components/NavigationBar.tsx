@@ -96,13 +96,6 @@ export default function NavigationBar() {
                                 )}
                             </Button>
                         )}
-
-                        <Button
-                            asChild
-                            className="ml-4 bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700 text-white rounded-full px-6 shadow-sm"
-                        >
-                            <Link href="/login">Login</Link>
-                        </Button>
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -159,14 +152,6 @@ export default function NavigationBar() {
                             </Button>
                         )}
 
-                        <div className="pt-2 border-t border-gray-200 dark:border-gray-800 mt-2">
-                            <Button
-                                asChild
-                                className="w-full bg-gray-900 dark:bg-blue-600 hover:bg-gray-800 dark:hover:bg-blue-700 text-white rounded-full shadow-sm"
-                            >
-                                <Link href="/login">Login</Link>
-                            </Button>
-                        </div>
                     </div>
                 </div>
             )}
