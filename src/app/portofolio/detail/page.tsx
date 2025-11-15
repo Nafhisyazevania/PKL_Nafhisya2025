@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { motion } from "framer-motion";
@@ -33,7 +33,7 @@ interface ProjectDetail {
     dokum?: string;
 }
 
-export default function DetailProject() {
+function DetailProjectContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
@@ -196,5 +196,21 @@ export default function DetailProject() {
                 </motion.div>
             </div>
         </div>
+    );
+}
+
+export default function DetailProject() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-950 transition-colors">
+                <NavigationBar />
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-2 border-gray-200 dark:border-gray-800 border-t-gray-900 dark:border-t-white mx-auto mb-4"></div>
+                    <p className="text-gray-600 dark:text-gray-400">Memuat...</p>
+                </div>
+            </div>
+        }>
+            <DetailProjectContent />
+        </Suspense>
     );
 }
