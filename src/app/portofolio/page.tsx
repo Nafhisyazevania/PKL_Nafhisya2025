@@ -71,7 +71,7 @@ export default function PortofolioPage() {
     useEffect(() => {
         getProjects();
     }, []);
-    
+
     const getBadgeColor = (jenis: string) => {
         switch (jenis.toLowerCase()) {
             case "pembelajaran":
@@ -86,11 +86,11 @@ export default function PortofolioPage() {
     };
 
     return (
-        <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors">
+        <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors justify-center">
             <NavigationBar />
 
             {/* Hero Section */}
-            <section id="hero" className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+            <section id="hero" className="sm:pt-10 pt-32 pb-30 px-4 sm:px-6 lg:px-8 overflow-hidden">
                 <div className="max-w-7xl mx-auto">
                     <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                         {/* Left Content */}
@@ -98,7 +98,7 @@ export default function PortofolioPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, ease: "easeOut" }}
-                            className="space-y-8"
+                            className="space-y-5"
                         >
                             <div className="space-y-2">
                                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400 tracking-wide uppercase">
@@ -137,7 +137,7 @@ export default function PortofolioPage() {
                         </motion.div>
 
                         <div className="relative h-[520px] hidden lg:flex items-center justify-center">
-                            <div 
+                            <div
                                 className="relative w-[450px] h-[500px]"
                                 style={{ perspective: "1200px" }}
                             >
@@ -145,9 +145,9 @@ export default function PortofolioPage() {
                                     const isActive = index === currentIndex;
                                     const isPrev = index < currentIndex;
                                     const isNext = index > currentIndex;
-                                    
+
                                     let position = {};
-                                    
+
                                     if (isActive) {
                                         position = {
                                             x: 0,
@@ -194,9 +194,8 @@ export default function PortofolioPage() {
                                             }}
                                         >
                                             <div
-                                                className={`relative w-72 h-96 rounded-3xl overflow-hidden shadow-2xl border-8 border-white bg-white transition-all duration-300 ${
-                                                    isActive ? "cursor-default" : "cursor-pointer hover:scale-105"
-                                                }`}
+                                                className={`relative w-72 h-96 rounded-3xl overflow-hidden shadow-2xl border-8 border-white bg-white transition-all duration-300 ${isActive ? "cursor-default" : "cursor-pointer hover:scale-105"
+                                                    }`}
                                                 onClick={() => !isActive && setCurrentIndex(index)}
                                             >
                                                 <img
@@ -229,11 +228,10 @@ export default function PortofolioPage() {
                                             <button
                                                 key={index}
                                                 onClick={() => setCurrentIndex(index)}
-                                                className={`transition-all duration-300 rounded-full ${
-                                                    index === currentIndex
+                                                className={`transition-all duration-300 rounded-full ${index === currentIndex
                                                         ? "w-8 h-2 bg-gray-900 dark:bg-white"
                                                         : "w-2 h-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-500 dark:hover:bg-gray-400"
-                                                }`}
+                                                    }`}
                                             />
                                         ))}
                                     </div>
@@ -290,13 +288,9 @@ export default function PortofolioPage() {
                             <div className="md:col-span-2 space-y-6">
                                 <div>
                                     <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                                        Halo! Saya Nafhisya, biasa dipanggil Pica. Saat ini saya siswa kelas 12
-                                        jurusan RPL di SMK Negeri 8 Malang dan menjalani PKL di PT. Hummatech
-                                        sebagai UI/UX Designer.
-                                    </p>
-                                    <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                                        Saya suka menciptakan desain yang simple tapi tetap fungsional. Tujuan saya
-                                        adalah membuat produk digital yang mudah digunakan dan nyaman dilihat.
+                                        Perkenalkan nama saya Nafhisya Zevania S.E, seorang siswa
+                                        SMK Negeri 8 Malang jurusan Rekayasa Perangkat Lunak. Saya memiliki
+                                        minat yang besar dalam dunia teknologi...
                                     </p>
                                 </div>
 
@@ -311,13 +305,13 @@ export default function PortofolioPage() {
                                     </div>
                                     <div className="space-y-1">
                                         <p className="text-sm text-gray-500 dark:text-gray-400">Lokasi</p>
-                                        <p className="font-medium text-gray-900 dark:text-white">Karangploso, Malang</p>
+                                        <p className="font-medium text-gray-900 dark:text-white">Karangploso, Ngijo Malang</p>
                                     </div>
                                     <div className="space-y-1">
                                         <p className="text-sm text-gray-500 dark:text-gray-400">Periode PKL</p>
                                         <p className="font-medium text-gray-900 dark:text-white">23 Juni - 28 Oktober 2025</p>
                                     </div>
-                </div>
+                                </div>
 
                                 <Button
                                     asChild
@@ -357,7 +351,7 @@ export default function PortofolioPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {projects.map((item, index) => (
                                     <motion.div
-                                key={item.id}
+                                        key={item.id}
                                         initial={{ opacity: 0, y: 20 }}
                                         whileInView={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -366,60 +360,60 @@ export default function PortofolioPage() {
                                         <Link href={`/portofolio/detail?id=${item.id}`}>
                                             <Card className="group bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 overflow-hidden h-full">
                                                 {/* Image */}
-                                {item.dokum ? (
+                                                {item.dokum ? (
                                                     <div className="aspect-video overflow-hidden bg-gray-100 dark:bg-gray-800">
-                                        <img
-                                            src={
-                                                item.dokum.startsWith("http")
-                                                    ? item.dokum
-                                                    : `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/dokum/${item.dokum}`
-                                            }
-                                            alt={item.judul}
+                                                        <img
+                                                            src={
+                                                                item.dokum.startsWith("http")
+                                                                    ? item.dokum
+                                                                    : `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/dokum/${item.dokum}`
+                                                            }
+                                                            alt={item.judul}
                                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                        />
-                                    </div>
-                                ) : (
+                                                        />
+                                                    </div>
+                                                ) : (
                                                     <div className="aspect-video flex items-center justify-center bg-gray-50 dark:bg-gray-800">
                                                         <ImageIcon className="w-12 h-12 text-gray-300 dark:text-gray-600" />
-                                    </div>
-                                )}
+                                                    </div>
+                                                )}
 
                                                 <CardContent className="p-6 space-y-3">
                                                     <div className="flex items-start justify-between gap-3">
                                                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
-                                        {item.judul}
+                                                            {item.judul}
                                                         </h3>
-                                        <Badge
-                                            variant="outline"
+                                                        <Badge
+                                                            variant="outline"
                                                             className={`text-xs shrink-0 transition-colors ${getBadgeColor(
-                                                item.jenis_projek
-                                            )}`}
-                                        >
-                                            {item.jenis_projek}
-                                        </Badge>
+                                                                item.jenis_projek
+                                                            )}`}
+                                                        >
+                                                            {item.jenis_projek}
+                                                        </Badge>
                                                     </div>
 
                                                     <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed">
-                                        {item.deskripsi}
-                                    </p>
+                                                        {item.deskripsi}
+                                                    </p>
 
                                                     <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 pt-2">
                                                         <span className="flex items-center gap-1">
                                                             <CalendarDays className="w-3.5 h-3.5" />
                                                             {item.tanggal_buat}
-                                        </span>
+                                                        </span>
                                                         <span className="flex items-center gap-1">
                                                             <Folder className="w-3.5 h-3.5" />
                                                             {item.fw}
-                                        </span>
-                                    </div>
-                                </CardContent>
+                                                        </span>
+                                                    </div>
+                                                </CardContent>
                                             </Card>
-                                    </Link>
+                                        </Link>
                                     </motion.div>
-                        ))}
-                    </div>
-                ) : (
+                                ))}
+                            </div>
+                        ) : (
                             <div className="text-center py-16">
                                 <p className="text-gray-500 dark:text-gray-400">Belum ada projek tersedia.</p>
                             </div>
@@ -457,7 +451,7 @@ export default function PortofolioPage() {
                                     nafhisyazevania@gmail.com
                                 </p>
                             </a>
-                            
+
                             <a
                                 href="https://www.instagram.com/piechaanafhisya"
                                 target="_blank"
@@ -470,7 +464,7 @@ export default function PortofolioPage() {
                                     @piechaanafhisya
                                 </p>
                             </a>
-                            
+
                             <a
                                 href="https://github.com/nafisyazevania"
                                 target="_blank"

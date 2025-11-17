@@ -2,14 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import {
-    MapPin,
-    Briefcase,
-    CalendarDays,
-    FolderGit2,
     Code,
     Layout,
     Zap,
@@ -36,9 +31,9 @@ interface TimelineItem {
 }
 
 const timelineData: TimelineItem[] = [
-    { id: 1, title: "Pembelajaran", date: "07 Juli 2025" },
-    { id: 2, title: "Produk", date: "08 Juli 2025" },
-    { id: 3, title: "Projek", date: "09 Juli 2025 – 21 Juli 2025" },
+    { id: 1, title: "Pembelajaran", date: "04 Juli 2025 - 22 Juli 2025" },
+    { id: 2, title: "Produk PKL", date: "23 Juli 2025 - 23 September 2025" },
+    { id: 3, title: "Projek Katering", date: "24 September 2025 – 17 Oktober 2025" },
 ];
 
 export default function Biodata() {
@@ -98,8 +93,8 @@ export default function Biodata() {
                         </div>
                         <div className="md:col-span-2 space-y-6">
                             <div>
-                                <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2">
-                                    Nafhisya Zevania
+                                <h1 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2">
+                                    Nafhisya Zevania S.E
                                 </h1>
                                 <p className="text-lg text-gray-600 dark:text-gray-400">
                                     Siswa SMK Negeri 8 Malang · Rekayasa Perangkat Lunak
@@ -109,7 +104,7 @@ export default function Biodata() {
                             <div className="grid grid-cols-2 gap-4 py-6">
                                 <div className="space-y-1">
                                     <p className="text-sm text-gray-500 dark:text-gray-400">Lokasi</p>
-                                    <p className="font-medium text-gray-900 dark:text-white">Malang, Indonesia</p>
+                                    <p className="font-medium text-gray-900 dark:text-white">Karangploso, Ngijo Malang</p>
                                 </div>
                                 <div className="space-y-1">
                                     <p className="text-sm text-gray-500 dark:text-gray-400">Kelas</p>
@@ -144,14 +139,15 @@ export default function Biodata() {
                         </h2>
                         <div className="space-y-4 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
                             <p>
-                                Perkenalkan, saya Nafhisya (Pica) dari Malang. Ketertarikan saya pada
-                                teknologi sudah ada sejak kecil, mulai dari bermain game hingga belajar TIK
-                                di SDN Tasikmadu 2.
+                                Perkenalkan nama saya Nafhisya Zevania S.E, seorang siswa
+                                SMK Negeri 8 Malang jurusan Rekayasa Perangkat Lunak. Saya memiliki
+                                minat yang besar dalam dunia teknologi, khususnya di bidang
+                                pengembangan web dan desain antarmuka pengguna.
                             </p>
                             <p>
-                                Minat ini berkembang di SMPN 1 Singosari lewat program KEK,
+                                Minat ini berkembang dari latar belakang di SMPN 1 Singosari lewat program KEK,
                                 tempat saya pertama kali mengenal HTML, CSS, JavaScript, serta desain kreatif
-                                menggunakan Photoshop dan Roblox. Inilah yang menuntun saya mengambil jurusan RPL di SMK.
+                                menggunakan Photoshop. Inilah yang menuntun saya mengambil jurusan RPL di SMK.
                             </p>
                         </div>
                     </section>

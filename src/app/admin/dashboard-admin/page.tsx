@@ -28,7 +28,6 @@ export default function AdminDashboard() {
     const fetchProjects = async () => {
         setLoading(true);
 
-        // ambil total proyek tanpa limit (pakai count)
         const { count, error: countError } = await supabase
             .from("project")
             .select("*", { count: "exact", head: true });
@@ -36,7 +35,6 @@ export default function AdminDashboard() {
         if (countError) console.error(countError);
         else setTotalProjects(count || 0);
 
-        // ambil 2 proyek terbaru untuk ditampilkan
         const { data, error } = await supabase
             .from("project")
             .select("*")
@@ -52,7 +50,6 @@ export default function AdminDashboard() {
     useEffect(() => {
         fetchProjects();
 
-        // realtime listener supaya update otomatis
         const channel = supabase
             .channel("realtime-projects")
             .on(
@@ -68,15 +65,15 @@ export default function AdminDashboard() {
     }, []);
 
     return (
-        <div className="space-y-6 min-h-screen p-6 text-gray-100">
-            <div className="flex items-center justify-between">
+        <div className="space-y-6 min-h-screen p-4 md:p-6 text-gray-100">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-white">Dashboard Admin</h1>
+                    <h1 className="text-2xl md:text-3xl font-bold text-white">Dashboard Admin</h1>
                     <p className="text-gray-400">Kelola dan pantau semua proyek Anda</p>
                 </div>
                 <Button
                     asChild
-                    className="bg-blue-700 hover:bg-blue-800 text-white shadow"
+                    className="bg-blue-700 hover:bg-blue-800 text-white shadow w-full md:w-auto"
                 >
                     <Link href="/admin/portofolio-admin/create">
                         <Plus className="mr-2 h-4 w-4" /> Tambah Proyek
@@ -84,9 +81,7 @@ export default function AdminDashboard() {
                 </Button>
             </div>
 
-            {/* Grid Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Total Proyek */}
                 <Card className="bg-neutral border border-blue-900/30 text-white shadow-lg">
                     <CardHeader>
                         <CardTitle>Total Proyek</CardTitle>
@@ -95,7 +90,7 @@ export default function AdminDashboard() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-5xl font-bold">{totalProjects}</p>
+                        <p className="text-4xl md:text-5xl font-bold">{totalProjects}</p>
                     </CardContent>
                 </Card>
 

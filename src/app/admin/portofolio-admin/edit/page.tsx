@@ -148,7 +148,7 @@ export default function EditProject() {
     };
 
     return (
-        <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8 py-16 flex justify-center relative">
+        <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8 py-10 sm:py-16 flex justify-center relative">
             <AlertDialog open={showBackDialog} onOpenChange={setShowBackDialog}>
                 <AlertDialogTrigger asChild>
                     <Button
@@ -216,7 +216,6 @@ export default function EditProject() {
                             />
                         </div>
 
-                        {/* Tanggal */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <Label htmlFor="tanggal_buat">Tanggal Mulai</Label>

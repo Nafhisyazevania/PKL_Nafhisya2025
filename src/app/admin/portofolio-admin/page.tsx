@@ -65,19 +65,19 @@ export default function PortofolioAdminPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-950 px-6 py-10 text-gray-100">
+        <div className="min-h-screen bg-gray-950 px-4 py-8 md:px-6 md:py-10 text-gray-100">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold text-white">Dashboard Proyek</h1>
+                        <h1 className="text-2xl md:text-3xl font-bold text-white">Dashboard Proyek</h1>
                         <p className="text-gray-400 text-sm">
                             Kelola semua proyek Anda di sini
                         </p>
                     </div>
                     <Button
                         asChild
-                        className="bg-blue-700 hover:bg-blue-800 text-white shadow"
+                        className="bg-blue-700 hover:bg-blue-800 text-white shadow w-full md:w-auto"
                     >
                         <Link href="/admin/portofolio-admin/create">
                             <Plus className="mr-2 h-4 w-4" /> Tambah Proyek
@@ -114,10 +114,9 @@ export default function PortofolioAdminPage() {
                                     </div>
                                 )}
 
-                                {/* Content */}
                                 <CardContent className="p-5 space-y-3">
-                                    <div className="flex items-start justify-between">
-                                        <h3 className="text-lg font-semibold text-white group-hover:text-gray-200 transition-colors truncate max-w-[200px]">
+                                    <div className="flex items-start justify-between gap-2">
+                                        <h3 className="text-lg font-semibold text-white group-hover:text-gray-200 transition-colors truncate">
                                             {item.judul}
                                         </h3>
                                         <Badge
@@ -144,13 +143,12 @@ export default function PortofolioAdminPage() {
                                     </div>
                                 </CardContent>
 
-                                {/* Footer Actions */}
-                                <CardFooter className="flex justify-between border-t border-gray-800 pt-4">
-                                    <div className="flex gap-2">
+                                <CardFooter className="flex flex-col sm:flex-row sm:justify-between gap-3 border-t border-gray-800 pt-4">
+                                    <div className="grid grid-cols-2 gap-2 sm:flex sm:w-auto w-full">
                                         <Link href={`/admin/portofolio-admin/detail?id=${item.id}`}>
                                             <Button
                                                 size="sm"
-                                                className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1"
+                                                className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1 w-full"
                                             >
                                                 <Info className="w-4 h-4" /> Detail
                                             </Button>
@@ -160,7 +158,7 @@ export default function PortofolioAdminPage() {
                                             <Button
                                                 size="sm"
                                                 variant="outline"
-                                                className="border-blue-400 text-blue-400 bg-neutral hover:text-blue-300 hover:bg-blue-400/10"
+                                                className="border-blue-400 text-blue-400 bg-neutral hover:text-blue-300 hover:bg-blue-400/10 flex items-center gap-1 w-full"
                                             >
                                                 <Pencil className="w-4 h-4" /> Edit
                                             </Button>
@@ -172,7 +170,8 @@ export default function PortofolioAdminPage() {
                                             <Button
                                                 size="sm"
                                                 variant="destructive"
-                                                className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-1"
+                                                // [UBAH] Tombol Hapus dibuat w-full di mobile dan w-auto di sm
+                                                className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-1 w-full sm:w-auto"
                                             >
                                                 <Trash2 className="w-4 h-4" /> Hapus
                                             </Button>

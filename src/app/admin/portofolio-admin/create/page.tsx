@@ -116,8 +116,7 @@ export default function CreateProject() {
     };
 
     return (
-        <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8 py-16 flex justify-center relative">
-            {/* Tombol Kembali */}
+        <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8 py-10 sm:py-16 flex justify-center relative">
             <AlertDialog open={showBackDialog} onOpenChange={setShowBackDialog}>
                 <AlertDialogTrigger asChild>
                     <Button
@@ -152,7 +151,6 @@ export default function CreateProject() {
                 </AlertDialogContent>
             </AlertDialog>
 
-            {/* Form Card */}
             <div className="w-full max-w-2xl">
                 <CardTitle className="text-2xl font-bold text-blue-400 flex items-center gap-2 mb-6 justify-center">
                     <Upload className="w-5 h-5" />
@@ -186,7 +184,6 @@ export default function CreateProject() {
                             />
                         </div>
 
-                        {/* Tanggal */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <Label htmlFor="tanggal_buat">Tanggal Mulai</Label>
@@ -219,7 +216,6 @@ export default function CreateProject() {
                             </div>
                         </div>
 
-                        {/* Jenis & Framework */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <Label htmlFor="jenis_projek">Jenis Projek</Label>
