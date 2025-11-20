@@ -80,7 +80,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
     matcher: [
-        // Jalankan middleware untuk semua route admin
         '/admin/:path*',
     ],
 }

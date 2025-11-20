@@ -65,14 +65,14 @@ export default function PortofolioAdminPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-950 px-4 py-8 md:px-6 md:py-10 text-gray-100">
+        <div className="min-h-screen px-4 py-8 md:px-6 md:py-10 text-gray-100">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
                     <div>
-                        <h1 className="text-2xl md:text-3xl font-bold text-white">Dashboard Proyek</h1>
+                        <h1 className="text-2xl md:text-3xl font-bold text-white">Portofolio Projek</h1>
                         <p className="text-gray-400 text-sm">
-                            Kelola semua proyek Anda di sini
+                            Kelola semua projek Anda di sini
                         </p>
                     </div>
                     <Button
@@ -80,7 +80,7 @@ export default function PortofolioAdminPage() {
                         className="bg-blue-700 hover:bg-blue-800 text-white shadow w-full md:w-auto"
                     >
                         <Link href="/admin/portofolio-admin/create">
-                            <Plus className="mr-2 h-4 w-4" /> Tambah Proyek
+                            <Plus className="mr-2 h-4 w-4" /> Tambah Projek
                         </Link>
                     </Button>
                 </div>
